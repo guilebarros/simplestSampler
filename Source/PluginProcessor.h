@@ -59,6 +59,9 @@ public:
     // funcao para carregar arquivo
     
     void loadFile();
+    void loadFile(const juce::String& path);
+    
+    int getNumSamplerSounds() { return mSampler.getNumSounds(); }
 
 private:
     //==============================================================================

@@ -182,6 +182,8 @@ void SimplestSamplerAudioProcessor::setStateInformation (const void* data, int s
 
 void SimplestSamplerAudioProcessor::loadFile()
 {
+    mSampler.clearSounds(); // limpa a memoria antes de carragar um sample
+    
     juce::FileChooser chooser {"Please choose a file to load"};
     
     if(chooser.browseForFileToOpen()) {
@@ -189,10 +191,25 @@ void SimplestSamplerAudioProcessor::loadFile()
         auto file = chooser.getResult();
         mFormatReader = mFormatManager.createReaderFor(file);
     }
+    
+    // acertando o range para os note-ons MIDI
     juce::BigInteger range;
     range.setRange(0, 128, true);
     mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1,0.1, 10.0));
 }
+
+ void SimplestSamplerAudioProcessor::loadFile(const juce::String& path)
+{
+     
+     mSampler.clearSounds(); // limpa a memoria antes de carragar um sample
+     
+     auto file = juce::File(path);
+     mFormatReader = mFormatManager.createReaderFor(file);
+     
+     juce::BigInteger range;
+     range.setRange(0, 128, true);
+     mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1,0.1, 10.0));
+ }
 
 //==============================================================================
 // This creates new instances of the plugin..

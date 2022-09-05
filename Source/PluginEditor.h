@@ -1,20 +1,10 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-//==============================================================================
-/**
-*/
-class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor
+class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                             public juce::FileDragAndDropTarget
 {
 public:
     SimplestSamplerAudioProcessorEditor (SimplestSamplerAudioProcessor&);
@@ -23,6 +13,11 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    
+    // funcoes virtuais 
+    
+    bool isInterestedInFileDrag (const juce::StringArray& files) override;
+    void filesDropped (const juce::StringArray& files, int x, int y) override;
 
 private:
     // This reference is provided as a quick way for your editor to
