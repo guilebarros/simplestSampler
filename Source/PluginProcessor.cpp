@@ -206,6 +206,23 @@ void SimplestSamplerAudioProcessor::loadFile()
      auto file = juce::File(path);
      mFormatReader = mFormatManager.createReaderFor(file);
      
+     auto sampleLength = static_cast<int>(mFormatReader->lengthInSamples);
+     
+     mWaveForm.setSize(1, sampleLength);
+     
+     // waveform (o argumento 1 esta levando em consideracao apenas o canal esquerdo)
+     
+     mFormatReader->read (&mWaveForm, 0, sampleLength, 0, true, false);
+     
+     // iterando no buffer (a variavel buffer eh nosso pointer para o buffer de audio)
+     
+     auto buffer = mWaveForm.getReadPointer(0); // 0 (so o canal esquerdo)
+     
+     for (int sample = 0; sample < mWaveForm.getNumSamples(); ++sample)
+     {
+         DBG(buffer[sample]); // linha para o console (verificar se esta iterando pelo vector do sample)
+     }
+     
      juce::BigInteger range;
      range.setRange(0, 128, true);
      mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1,0.1, 10.0));

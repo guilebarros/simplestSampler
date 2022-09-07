@@ -25,6 +25,10 @@ private:
     
     juce::TextButton mLoadButton { "Load " };
     
+    std::vector<float> mAudioPoints;
+    
+    bool mShouldBePainting { false }; // so desenha a waveform se carregar um arquivo
+    
     SimplestSamplerAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimplestSamplerAudioProcessorEditor)

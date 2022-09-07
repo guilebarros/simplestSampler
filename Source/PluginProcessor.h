@@ -62,12 +62,17 @@ public:
     void loadFile(const juce::String& path);
     
     int getNumSamplerSounds() { return mSampler.getNumSounds(); }
+    
+    // helper function para acessar o AudioBuffer mWaveForm
+    juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
 
 private:
     //==============================================================================
     
     juce::Synthesiser mSampler; // objeto da classe Synthesiser
     const int mNumVoices { 3 }; // numero de vozes
+    juce::AudioBuffer<float> mWaveForm; // buffer (vector) para visualizacao da waveform
+    
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader { nullptr };
     
