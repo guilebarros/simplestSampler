@@ -18,6 +18,67 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     
     mLoadButton.onClick = [&]() { audioProcessor.loadFile(); };
     addAndMakeVisible(mLoadButton);
+    
+    // Sliders
+    
+    // Attack Slider
+    
+    mAttackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    mAttackSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
+    mAttackSlider.setRange(0.0f, 5.0f, 0.01f);
+    addAndMakeVisible(mAttackSlider);
+    
+    mAttackLabel.setFont(10.0f);
+    mAttackLabel.setText("Attack", juce::NotificationType::dontSendNotification);
+    mAttackLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::green);
+    mAttackLabel.setJustificationType(juce::Justification::centredTop);
+    mAttackLabel.attachToComponent(&mAttackSlider, false);
+    
+    // Decay Slider
+    
+    mDecaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    mDecaySlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
+    mDecaySlider.setRange(0.0f, 5.0f, 0.01f);
+    addAndMakeVisible(mDecaySlider);
+    
+    mDecayLabel.setFont(10.0f);
+    mDecayLabel.setText("Decay", juce::NotificationType::dontSendNotification);
+    mDecayLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::green);
+    mDecayLabel.setJustificationType(juce::Justification::centredTop);
+    mDecayLabel.attachToComponent(&mDecaySlider, false);
+    
+    // Sustain
+    
+    mSustainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    mSustainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
+    mSustainSlider.setRange(0.0f, 5.0f, 0.01f);
+    addAndMakeVisible(mSustainSlider);
+    
+    mSustainLabel.setFont(10.0f);
+    mSustainLabel.setText("Sustain", juce::NotificationType::dontSendNotification);
+    mSustainLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::green);
+    mSustainLabel.setJustificationType(juce::Justification::centredTop);
+    mSustainLabel.attachToComponent(&mSustainSlider, false);
+    
+    // Release Slider
+    
+    mReleaseSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+    mReleaseSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
+    mReleaseSlider.setRange(0.0f, 1.0f, 0.01f);
+    addAndMakeVisible(mReleaseSlider);
+    
+    mReleaseLabel.setFont(10.0f);
+    mReleaseLabel.setText("Release", juce::NotificationType::dontSendNotification);
+    mReleaseLabel.setColour(juce::Label::ColourIds::textColourId, juce::Colours::green);
+    mReleaseLabel.setJustificationType(juce::Justification::centredTop);
+    mReleaseLabel.attachToComponent(&mReleaseSlider, false);
+    
+    
+    
     setSize (600, 200);
 }
 
@@ -37,8 +98,10 @@ void SimplestSamplerAudioProcessorEditor::paint (juce::Graphics& g)
     if (mShouldBePainting)
     {
         // classe Path para desenhar a waveform
+        
         juce::Path p;
         mAudioPoints.clear(); // limpa o path, caso carreguemos outro sample
+        
         
         // Lógica (SUDO CODE)
         // O arquivo foi arrastado?
@@ -104,7 +167,15 @@ void SimplestSamplerAudioProcessorEditor::resized()
 {
     
     // mLoadButton.setBounds(getWidth() / 2 - 50, getWidth() / 2 - 50, 100, 100);
+    const auto startX = 0.6f;
+    const auto startY = 0.6f;
+    const auto dialWidth = 0.1f;
+    const auto dialHeight = 0.4f;
     
+    mAttackSlider.setBoundsRelative(startX, startY, dialWidth, dialHeight);
+    mDecaySlider.setBoundsRelative(startX + dialWidth, startY, dialWidth, dialHeight);
+    mSustainSlider.setBoundsRelative(startX + (dialWidth * 2), startY, dialWidth, dialHeight);
+    mReleaseSlider.setBoundsRelative(startX + (dialWidth * 3), startY, dialWidth, dialHeight);
 }
 
 bool SimplestSamplerAudioProcessorEditor::isInterestedInFileDrag(const juce::StringArray& files)
@@ -127,9 +198,13 @@ void SimplestSamplerAudioProcessorEditor::filesDropped(const juce::StringArray& 
     {
         if(isInterestedInFileDrag(file))
         {
-            mShouldBePainting = true; // desenhar a waveform
+           
+            
             // carregue o arquivo
             audioProcessor.loadFile(file);
+            
+            mShouldBePainting = true; // desenhar a waveform
+            
         }
     }
     
