@@ -66,12 +66,14 @@ public:
     // helper function para acessar o AudioBuffer mWaveForm
     juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
     
-    void getADSRValue();
+    void updateADSR();
     
-    float attack { 0.0 };
-    float decay { 0.0 };
-    float sustain { 0.0 };
-    float release { 0.0 };
+//    float attack { 0.0 };
+//    float decay { 0.0 };
+//    float sustain { 0.0 };
+//    float release { 0.0 };
+    
+    juce::ADSR::Parameters& getADSRParams() { return mADSRParams; }
 
 private:
     //==============================================================================
@@ -79,6 +81,8 @@ private:
     juce::Synthesiser mSampler; // objeto da classe Synthesiser
     const int mNumVoices { 3 }; // numero de vozes
     juce::AudioBuffer<float> mWaveForm; // buffer (vector) para visualizacao da waveform
+    
+    juce::ADSR::Parameters mADSRParams;
     
     juce::AudioFormatManager mFormatManager;
     juce::AudioFormatReader* mFormatReader { nullptr };
