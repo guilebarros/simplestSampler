@@ -27,6 +27,7 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mAttackSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
     mAttackSlider.setRange(0.0f, 5.0f, 0.01f);
+    mAttackSlider.addListener(this);
     addAndMakeVisible(mAttackSlider);
     
     mAttackLabel.setFont(10.0f);
@@ -41,6 +42,7 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mDecaySlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
     mDecaySlider.setRange(0.0f, 5.0f, 0.01f);
+    mDecaySlider.addListener(this);
     addAndMakeVisible(mDecaySlider);
     
     mDecayLabel.setFont(10.0f);
@@ -55,6 +57,7 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mSustainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
     mSustainSlider.setRange(0.0f, 5.0f, 0.01f);
+    mSustainSlider.addListener(this);
     addAndMakeVisible(mSustainSlider);
     
     mSustainLabel.setFont(10.0f);
@@ -69,6 +72,7 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mReleaseSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
     mReleaseSlider.setRange(0.0f, 1.0f, 0.01f);
+    mReleaseSlider.addListener(this);
     addAndMakeVisible(mReleaseSlider);
     
     mReleaseLabel.setFont(10.0f);
@@ -211,3 +215,22 @@ void SimplestSamplerAudioProcessorEditor::filesDropped(const juce::StringArray& 
     repaint();
 }
 
+void SimplestSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
+{
+    if (slider == &mAttackSlider)
+    {
+        audioProcessor.attack = mAttackSlider.getValue();
+    }
+    else if (slider == &mDecaySlider)
+    {
+        audioProcessor.decay = mDecaySlider.getValue();
+    }
+    else if (slider == &mSustainSlider)
+    {
+        audioProcessor.sustain = mSustainSlider.getValue();
+    }
+    else if (slider == &mReleaseSlider)
+    {
+        audioProcessor.release = mReleaseSlider.getValue();
+    }
+}

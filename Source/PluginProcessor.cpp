@@ -144,6 +144,8 @@ void SimplestSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+    
+    getADSRValue();
 
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
@@ -227,6 +229,11 @@ void SimplestSamplerAudioProcessor::loadFile()
      range.setRange(0, 128, true);
      mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1,0.1, 10.0));
  }
+
+void SimplestSamplerAudioProcessor::getADSRValue()
+{
+    DBG("attack: " << attack << " decay: " << decay << " sustain " << sustain << " release " << release);
+}
 
 //==============================================================================
 // This creates new instances of the plugin..
