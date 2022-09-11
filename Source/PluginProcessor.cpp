@@ -19,12 +19,13 @@ SimplestSamplerAudioProcessor::SimplestSamplerAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), mAPVTS(*this, nullptr, "PARAMETERS", createParameters())
 #endif
 {
     // criando as vozes do sampler
     
     mFormatManager.registerBasicFormats();
+    mAPVTS.state.addListener(this);
     
     for (int i = 0; i < mNumVoices; i++)
     {
@@ -150,6 +151,12 @@ void SimplestSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+    if (mShouldUpdate)
+    
+    {
+        updateADSR();
+    }
+    
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 }
@@ -227,10 +234,18 @@ void SimplestSamplerAudioProcessor::loadFile()
      juce::BigInteger range;
      range.setRange(0, 128, true);
      mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1,0.1, 10.0));
+     
+     updateADSR();
  }
 
 void SimplestSamplerAudioProcessor::updateADSR()
 {
+    
+    mADSRParams.attack = mAPVTS.getRawParameterValue("ATTACK")->load();
+    mADSRParams.decay = mAPVTS.getRawParameterValue("DECAY")->load();
+    mADSRParams.sustain = mAPVTS.getRawParameterValue("SUSTAIN")->load();
+    mADSRParams.release = mAPVTS.getRawParameterValue("RELEASE")->load();
+    
     // DBG("attack: " << attack << " decay: " << decay << " sustain " << sustain << " release " << release);
     
     for (int i = 0; i < mSampler.getNumSounds(); i++)
@@ -242,6 +257,23 @@ void SimplestSamplerAudioProcessor::updateADSR()
         }
         mSampler.getSound(i);
     }
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout SimplestSamplerAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
+    
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", 0.0f, 5.0f, 0.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", 0.0f, 3.0f, 2.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+    parameters.push_back (std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
+    
+    return { parameters.begin(), parameters.end()};
+}
+
+void SimplestSamplerAudioProcessor::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property)
+{
+    mShouldUpdate = true;
 }
 
 //==============================================================================

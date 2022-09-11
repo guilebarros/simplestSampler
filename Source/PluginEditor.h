@@ -4,9 +4,7 @@
 #include "PluginProcessor.h"
 
 class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                             public juce::FileDragAndDropTarget,
-                                             public juce::Slider::Listener
-
+                                             public juce::FileDragAndDropTarget
 {
 public:
     SimplestSamplerAudioProcessorEditor (SimplestSamplerAudioProcessor&);
@@ -21,7 +19,6 @@ public:
     bool isInterestedInFileDrag (const juce::StringArray& files) override;
     void filesDropped (const juce::StringArray& files, int x, int y) override;
     
-    void sliderValueChanged (juce::Slider* slider) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -35,6 +32,11 @@ private:
     
     juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
     juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;
+    
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mAttackAttachment,
+                                                                          mDecayAttachment,
+                                                                          mSustainAttachment,
+                                                                          mReleaseAttachment;
     
     SimplestSamplerAudioProcessor& audioProcessor;
 

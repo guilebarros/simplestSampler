@@ -26,8 +26,6 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mAttackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mAttackSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
-    mAttackSlider.setRange(0.0f, 5.0f, 0.01f);
-    mAttackSlider.addListener(this);
     addAndMakeVisible(mAttackSlider);
     
     mAttackLabel.setFont(10.0f);
@@ -36,14 +34,20 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mAttackLabel.setJustificationType(juce::Justification::centredTop);
     mAttackLabel.attachToComponent(&mAttackSlider, false);
     
+    mAttackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
+                                                                               "ATTACK",
+                                                                               mAttackSlider);
+    
     // Decay Slider
     
     mDecaySlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mDecaySlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
-    mDecaySlider.setRange(0.0f, 5.0f, 0.01f);
-    mDecaySlider.addListener(this);
     addAndMakeVisible(mDecaySlider);
+    
+    mDecayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
+                                                                                              "DECAY",
+                                                                                              mDecaySlider);
     
     mDecayLabel.setFont(10.0f);
     mDecayLabel.setText("Decay", juce::NotificationType::dontSendNotification);
@@ -56,9 +60,11 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mSustainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mSustainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
-    mSustainSlider.setRange(0.0f, 5.0f, 0.01f);
-    mSustainSlider.addListener(this);
     addAndMakeVisible(mSustainSlider);
+    
+    mSustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
+                                                                                                "SUSTAIN",
+                                                                                                mSustainSlider);
     
     mSustainLabel.setFont(10.0f);
     mSustainLabel.setText("Sustain", juce::NotificationType::dontSendNotification);
@@ -71,9 +77,11 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     mReleaseSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
     mReleaseSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::peru);
-    mReleaseSlider.setRange(0.0f, 1.0f, 0.01f);
-    mReleaseSlider.addListener(this);
     addAndMakeVisible(mReleaseSlider);
+    
+    mReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.getAPVTS(),
+                                                                                                "RELEASE",
+                                                                                                mReleaseSlider);
     
     mReleaseLabel.setFont(10.0f);
     mReleaseLabel.setText("Release", juce::NotificationType::dontSendNotification);
@@ -215,24 +223,4 @@ void SimplestSamplerAudioProcessorEditor::filesDropped(const juce::StringArray& 
     repaint();
 }
 
-void SimplestSamplerAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
-{
-    if (slider == &mAttackSlider)
-    {
-        audioProcessor.getADSRParams().attack = mAttackSlider.getValue();
-    }
-    else if (slider == &mDecaySlider)
-    {
-        audioProcessor.getADSRParams().decay = mDecaySlider.getValue();
-    }
-    else if (slider == &mSustainSlider)
-    {
-        audioProcessor.getADSRParams().sustain = mSustainSlider.getValue();
-    }
-    else if (slider == &mReleaseSlider)
-    {
-        audioProcessor.getADSRParams().release = mReleaseSlider.getValue();
-    }
-    
-    audioProcessor.updateADSR();
-}
+
