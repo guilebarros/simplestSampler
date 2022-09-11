@@ -2,9 +2,10 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "WaveThumbnail.h"
 
-class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                             public juce::FileDragAndDropTarget
+class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor
+                                             
 {
 public:
     SimplestSamplerAudioProcessorEditor (SimplestSamplerAudioProcessor&);
@@ -16,8 +17,7 @@ public:
     
     // funcoes virtuais 
     
-    bool isInterestedInFileDrag (const juce::StringArray& files) override;
-    void filesDropped (const juce::StringArray& files, int x, int y) override;
+    
     
 
 private:
@@ -26,9 +26,7 @@ private:
     
     juce::TextButton mLoadButton { "Load " };
     
-    std::vector<float> mAudioPoints;
-    
-    bool mShouldBePainting { false }; // so desenha a waveform se carregar um arquivo
+    WaveThumbnail mWaveThumbnail;
     
     juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
     juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;
