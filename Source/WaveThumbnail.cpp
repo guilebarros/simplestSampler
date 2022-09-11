@@ -75,7 +75,7 @@ void WaveThumbnail::paint (juce::Graphics& g)
         // se nao carregar o sample escrever o texto para carregar
         g.setColour(juce::Colours::white);
         g.setFont(20.0f);
-        g.drawFittedText("Dude, drop an audio file to load", getLocalBounds(), juce::Justification::centred, 1);
+        g.drawFittedText("Dude, drop an audio file here to load", getLocalBounds(), juce::Justification::centred, 1);
     }
 }
 

@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "WaveThumbnail.h"
+#include "ADSRComponent.h"
 
 class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor
                                              
@@ -24,17 +25,8 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     
-    juce::TextButton mLoadButton { "Load " };
-    
     WaveThumbnail mWaveThumbnail;
-    
-    juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
-    juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;
-    
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mAttackAttachment,
-                                                                          mDecayAttachment,
-                                                                          mSustainAttachment,
-                                                                          mReleaseAttachment;
+    ADSRComponent mADSR;
     
     SimplestSamplerAudioProcessor& audioProcessor;
 
