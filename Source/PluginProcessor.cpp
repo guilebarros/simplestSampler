@@ -157,6 +157,32 @@ void SimplestSamplerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
         updateADSR();
     }
     
+    // obter e armazenar informacoes do buffer MIDI
+    // ================DEPRECATED (ITERATOR)==========PART 9(VIDEO)
+    juce::MidiMessage m;
+    
+    juce::MidiBuffer::Iterator it {midiMessages};
+    int sample;
+    
+    while (it.getNextEvent(m, sample))
+    {
+        // verificar note on
+        if(m.isNoteOn())
+            mIsNotePlayed = true;
+        //note on presente - iniciar o playhead
+        else if(m.isNoteOff())
+        // note of presente - pare o plahead
+            mIsNotePlayed = false;
+            
+    }
+    
+    mSampleCount = mIsNotePlayed ? mSampleCount += buffer.getNumSamples() : 0;
+    
+    
+    
+    //=====================================================
+    
+    
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 }

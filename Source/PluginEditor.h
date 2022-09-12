@@ -5,7 +5,8 @@
 #include "WaveThumbnail.h"
 #include "ADSRComponent.h"
 
-class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor
+class SimplestSamplerAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                             public juce::Timer
                                              
 {
 public:
@@ -16,7 +17,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     
-    // funcoes virtuais 
+    void timerCallback() override; // pure virtual function overriding the timer class
     
     
     

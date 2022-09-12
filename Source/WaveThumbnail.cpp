@@ -68,6 +68,21 @@ void WaveThumbnail::paint (juce::Graphics& g)
         g.setFont(15.0f);
         auto textBounds = getLocalBounds().reduced(10, 10);
         g.drawFittedText(mFileName, textBounds, juce::Justification::topRight, 1);
+        
+        // PLAYHEAD
+        
+        auto playHeadPosition = juce::jmap<int>(audioProcessor.getSampleCount(), 0, audioProcessor.getWaveForm().getNumSamples(), 0, getWidth());
+        g.setColour(juce::Colours::white);
+        
+        //playhead line
+        g.drawLine(playHeadPosition, 0, playHeadPosition, getHeight(), 2.0f);
+        
+        // shade
+        
+        g.setColour(juce::Colours::black.withAlpha(0.2f));
+        g.fillRect(0,0, playHeadPosition, getHeight());
+        
+        
     }
     
     else

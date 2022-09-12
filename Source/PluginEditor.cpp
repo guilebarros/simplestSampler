@@ -19,11 +19,15 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     
     addAndMakeVisible(mWaveThumbnail);
     addAndMakeVisible(mADSR);
+    
+    startTimerHz(30);
+    
     setSize (600, 400);
 }
 
 SimplestSamplerAudioProcessorEditor::~SimplestSamplerAudioProcessorEditor()
 {
+    stopTimer();
 }
 
 //==============================================================================
@@ -41,5 +45,8 @@ void SimplestSamplerAudioProcessorEditor::resized()
     
 }
 
-
+void SimplestSamplerAudioProcessorEditor::timerCallback()
+{
+    repaint();
+}
 
