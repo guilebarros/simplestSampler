@@ -29,6 +29,9 @@ private:
     WaveThumbnail mWaveThumbnail;
     ADSRComponent mADSR;
     
+    // imagem da pasta Resources
+    juce::ImageComponent mImageComponent;
+    
     SimplestSamplerAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimplestSamplerAudioProcessorEditor)

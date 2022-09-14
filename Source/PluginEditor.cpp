@@ -17,8 +17,21 @@ SimplestSamplerAudioProcessorEditor::SimplestSamplerAudioProcessorEditor (Simple
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     
+    //acessando a foto .png na pasta Resources (o nome do arquivo eh pic.png)
+    
+    auto myPicImage = juce::ImageCache::getFromMemory(BinaryData::pic_png, BinaryData::pic_pngSize);
+    
+    // checar se a imagem eh valida
+    
+    if (! myPicImage.isNull())
+        mImageComponent.setImage(myPicImage, juce::RectanglePlacement::stretchToFit);
+    else
+        jassert(! myPicImage.isNull());
+    
     addAndMakeVisible(mWaveThumbnail);
     addAndMakeVisible(mADSR);
+    //foto pic.png
+    addAndMakeVisible(mImageComponent);
     
     startTimerHz(30);
     
@@ -42,6 +55,9 @@ void SimplestSamplerAudioProcessorEditor::resized()
     
     mWaveThumbnail.setBoundsRelative(0.0f, 0.25f, 1.0f, 0.5f);
     mADSR.setBoundsRelative(0.0f, 0.75f, 1.0f, 0.25f);
+    // foto pic.png
+    mImageComponent.setBoundsRelative(0.33f, 0.05f, 0.35f, 0.25f);
+    
     
 }
 

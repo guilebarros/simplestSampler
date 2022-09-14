@@ -20,6 +20,9 @@
             file="Source/ADSRComponent.cpp"/>
       <FILE id="VfFo2w" name="ADSRComponent.h" compile="0" resource="0" file="Source/ADSRComponent.h"/>
     </GROUP>
+    <GROUP id="{D3764B21-A0CC-0B7A-94BA-615194B9337E}" name="Resources">
+      <FILE id="eHdJTR" name="pic.png" compile="0" resource="1" file="Resources/pic.png"/>
+    </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
